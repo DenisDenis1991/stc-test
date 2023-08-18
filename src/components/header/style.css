@@ -1,0 +1,9 @@
+.header {
+  background-color: #273b69;
+  min-height: 64px;
+}
+
+.container {
+  max-width: 1280px;
+  padding: 0 24px;
+}

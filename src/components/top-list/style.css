@@ -1,0 +1,21 @@
+.top-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.top-nav__img {
+  height: 36px;
+}
+
+.top-list {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* .top-list__item:first-child {
+  align-self: center;
+} */
