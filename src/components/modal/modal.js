@@ -32,7 +32,6 @@ const Modal = () => {
       //   })
       // )
       return () => {
-        console.log('unMount')
         dispatch(setCurrentId(null))
       }
     }
