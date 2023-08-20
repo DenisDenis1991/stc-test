@@ -1,16 +1,26 @@
-import photo from '../../content/photo.png'
+import { setOpenModal, setCurrentId, setHeading } from '../../store/data/data.slice'
+import './style.scss'
+import {useDispatch, useSelector} from 'react-redux'
 
-const User = (currentUser) => {
-  const {currentUser:user} = currentUser
-  console.log(user)
+const User = ({currentUser}) => {
+  const dispatch = useDispatch()
+  
+  const handlCorrect = (id) => {
+    dispatch(setCurrentId(id))
+    dispatch(setHeading(true))
+    dispatch(setOpenModal(true))
+  }
+
   return (
-    <li className="user-list__item">
-      <img src={photo} />
-      <p className="user-list__name">{user.name}</p>
-      <a href={`tel: ${((user.phone).split(' ')[0])}`}>{user.phone}</a>
-      <address>{user.address?.city} {user.address?.street} {user.address?.suite}</address>
-      <a href={`mailto:${user.email}`}>{user.email}</a>
-      <button type='button'>Редактировать</button>
+    <li className={currentUser.id%2===0? "user-list__item user-list__item--second":"user-list__item"}>
+      <div className='user-list__img'>
+        <img src={currentUser.image} />
+      </div>
+      <p className="user-list__name">{currentUser.firstName} {currentUser.lastName}</p>
+      <a href={`tel: ${(currentUser.phone)}`}>{currentUser.phone}</a>
+      <address>{currentUser.address?.city} {currentUser.address?.address}</address>
+      <a href={`mailto:${currentUser.email}`}>{currentUser.email}</a>
+      <button id={currentUser.id} type='button' onClick={() => handlCorrect(currentUser.id)}>Редактировать</button>
     </li>
   )
 }

@@ -1,4 +1,42 @@
-.user-list__item {
-  display: flex;
-  justify-content: space-between;
+.user-list {
+  padding: 136px 24px 12px 24px;
+  background-color: #E5E5E5;
+  overflow-y: scroll;
+
+  &__item {
+    display: grid;
+    grid-template-columns: (min-content 160px 160px 120px 180px 140px);
+    // grid-template-columns: repeat(6, 1fr);
+    column-gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 34px 10px 0;
+    background-color: white;
+
+    &:hover {
+      background-color: #c4c4c4;
+    }
+  
+    &--second {
+    background-color: #f7f7f7; 
+    }
+
+    & button {
+      display: none;
+  
+    }
+    &:hover button{
+      display: block;
+    }
+
+    @media (max-width: 1054px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  // &__name {
+  //   width: 180px;
+  // }
+
 }
+
