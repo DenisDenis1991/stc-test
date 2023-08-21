@@ -10,6 +10,8 @@ const initialState = {
   currentId: null,
   heading: false,
   openModal: false,
+  editUser: null,
+  image:'',
 }
 
 export const dataLoading = createSlice ({
@@ -24,6 +26,10 @@ export const dataLoading = createSlice ({
       state.currentId = action.payload;
     },
 
+    setImage: (state, action) => {
+      state.image = action.payload;
+    },
+
     setHeading: (state, action) => {
       state.heading = action.payload;
     },
@@ -34,8 +40,25 @@ export const dataLoading = createSlice ({
 
     addNewUser: (state,action) => {
       state.newUser.push(action.payload);
-      // state.users.push(action.payload)
-      // state.users = [...state.users, ...action.payload];
+    },
+
+    editUser: (state, action) =>  {
+      state.editUser = action.payload
+      if(action.payload.id > state.countUsers) {
+       state.newUser = 
+       [
+         ...state.newUser.slice(0, action.payload.id-101), 
+         action.payload,
+         ...state.newUser.slice(action.payload.id-100)
+      ]
+      } else {
+        state.users = 
+        [
+          ...state.users.slice(0, action.payload.id-1), 
+          action.payload,
+          ...state.users.slice(action.payload.id)
+       ]        
+      }
     }
   },
   extraReducers(builder) {
@@ -53,4 +76,4 @@ export const dataLoading = createSlice ({
   }
 })
 
-export const { scrolling, addNewUser, setCurrentId, setHeading, setOpenModal } = dataLoading.actions;
+export const { scrolling, addNewUser, setCurrentId, setHeading, setOpenModal, editUser, setImage } = dataLoading.actions;

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import UsersList from "../../components/users-list/users-list";
-import users from "../../mock/mock";
 import axios from "axios";
 import Modal from "../../components/modal/modal";
 import {useDispatch, useSelector} from 'react-redux'
 import { fetchUsers } from "../../store/api-action";
 import { scrolling } from '../../store/data/data.slice'
 import { store } from "../../store";
+import debounce from "../../utils/utils";
+
 
 
 const MainPage = () => {
@@ -34,7 +35,7 @@ const MainPage = () => {
   // }, [scrol])
   
   useEffect(() => {
-    document.addEventListener('scroll', scrollHandler)
+    document.addEventListener('scroll', debounce(scrollHandler,500))
     dispatch(fetchUsers(0)).finally(dispatch(scrolling(false)))
     
     return function() {
@@ -44,7 +45,9 @@ const MainPage = () => {
 
   const scrollHandler = (e) => {
     if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 20) {
+      console.log('scroll')
       dispatch(scrolling(true))
+      
     }
   }
 
