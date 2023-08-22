@@ -12,6 +12,7 @@ const initialState = {
   openModal: false,
   editUser: null,
   image:'',
+  filteredUsers: [],
 }
 
 export const dataLoading = createSlice ({
@@ -40,6 +41,10 @@ export const dataLoading = createSlice ({
 
     addNewUser: (state,action) => {
       state.newUser.push(action.payload);
+    },
+
+    filteredUsers: (state, action) => {
+      state.filteredUsers = action.payload
     },
 
     editUser: (state, action) =>  {
@@ -76,4 +81,4 @@ export const dataLoading = createSlice ({
   }
 })
 
-export const { scrolling, addNewUser, setCurrentId, setHeading, setOpenModal, editUser, setImage } = dataLoading.actions;
+export const { scrolling, addNewUser, setCurrentId, setHeading, setOpenModal, editUser, setImage, filteredUsers } = dataLoading.actions;

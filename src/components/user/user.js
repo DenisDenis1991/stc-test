@@ -11,15 +11,20 @@ const User = ({currentUser}) => {
     dispatch(setOpenModal(true))
   }
 
+
   return (
     <li className={currentUser.id%2===0? "user-list__item user-list__item--second":"user-list__item"}>
       <div className='user-list__img'>
         <img src={currentUser.image || ''} alt='avatar' />
       </div>
       <p className="user-list__name">{currentUser.firstName || currentUser.name} {currentUser.lastName|| ''}</p>
-      {/* <a href={`tel: ${(currentUser.phone)}`}>{currentUser.phone}</a>
-      <address>{currentUser.address?.city} {currentUser.address?.address}</address>
-      <a href={`mailto:${currentUser.email}`}>{currentUser.email}</a> */}
+      <a href={`tel: ${(currentUser.phone)}`}>{currentUser.phone}</a>
+      {/* <address>        
+        {currentUser.address.address? `${currentUser.address.address} ${currentUser.address.city}` : currentUser.address}
+      </address> */}
+      
+      {/* <address>{currentUser.address.city||currentUser.address} {currentUser.address.address||currentUser.address}</address> */}
+      <a href={`mailto:${currentUser.email}`}>{currentUser.email}</a>
       <button id={currentUser.id} type='button' onClick={() => handlCorrect(currentUser.id)}>Редактировать</button>
     </li>
   )

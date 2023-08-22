@@ -7,13 +7,13 @@ import { addNewUser, setOpenModal, setCurrentId, editUser, setImage } from '../.
 const Modal = () => {
   const [debouncedInputValue, setDebouncedInputValue] = useState("");
   const [inputValue, setInputValue] = useState({})
-
   const currentId = useSelector((state) => state.reducer.currentId)
+
   const countUsers = useSelector((state) => state.reducer.countUsers)
   const currentUser = useSelector((state) => state.reducer.users[currentId-1])
   const newUser = useSelector((state) => state.reducer.newUser[currentId-countUsers-1])
   const openModal = useSelector((state) => state.reducer.openModal)
-  // console.log(currentUser.firstName)
+  console.log(newUser)
   
   useEffect(() => {
     if (currentUser) {
@@ -22,21 +22,31 @@ const Modal = () => {
   })
 
   useEffect(() => {
+    console.log('inputValue', inputValue)
     if (currentId) {
       return(
         setInputValue({
           name: `${currentUser?.firstName} ${currentUser?.lastName}` || newUser.name,
-          number: currentUser?.phone || newUser.number,
-          email: currentUser?.email || newUser.email,
-          address: currentUser?.address.address || newUser.address,
-          photo: currentUser.image
+          phone: currentUser?.phone|| newUser.phone,
+          email: currentUser?.email|| newUser.email,
+          address: currentUser.address.address || newUser.address || currentUser.address,
+          // photo: currentUser.image
         })
       )
     } 
     else {
-      return () => {
-        dispatch(setCurrentId(null))
-      }
+      return (
+        setInputValue({
+          name: '',
+          phone: '',
+          email: '',
+          address: '',
+          // photo: currentUser.image
+        })
+      ) 
+      // ()=> {
+      //   dispatch(setCurrentId(null))
+      // }
     }
   },[currentId])
 
@@ -50,9 +60,9 @@ const Modal = () => {
     dispatch(setOpenModal(false))
     dispatch(setCurrentId(null))
     // handleOnLoad()
-    dispatch(setImage(    fileReader.onloadend = () => {
-      setImageUrl(fileReader.result)
-    }))
+    // dispatch(setImage(    fileReader.onloadend = () => {
+    //   setImageUrl(fileReader.result)
+    // }))
     if (!heading) {
       dispatch(addNewUser(inputValue))
     } else {
@@ -92,9 +102,7 @@ const Modal = () => {
     }
 
     const handleOnLoad = (evt) => {
-      const file = evt.target.files[0]
-      setImage(file)
-      fileReader.readAsDataURL(file)
+      console.log(evt.target)
     } 
 
   return (
@@ -129,10 +137,10 @@ const Modal = () => {
             className=''
             required
             id='number'
-            name='number'
+            name='phone'
             placeholder='Номер'
             type='text'
-            value= {inputValue.number || ''}
+            value= {inputValue.phone || ''}
             onChange={handleInputChange}
           />
           <label className="visually-hidden" htmlFor="email">Электронная почта</label>
@@ -150,10 +158,11 @@ const Modal = () => {
           <input
             required
             className=''
+            ref={fileLoader}
             name='address'
             id='address'
             placeholder='Адрес'
-            value= {inputValue.address || ''}
+            value= {(inputValue.address)? '22' : '11'}
             type='text'
             onChange={handleInputChange}
           />
