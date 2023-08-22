@@ -15,12 +15,13 @@ const UsersList = () => {
   const newUser = useSelector((state) => state.reducer.newUser)
   const totalCount = useSelector((state) => state.reducer.countUsers)
   const scrol = useSelector((state) => state.reducer.scroll)
+  const isLoading = useSelector((state) => state.reducer.isLoading)
 
   const fetchHandler = () => {
     setSplitUsers((prevState) => prevState + USER_PER_PAGE)
     dispatch(fetchUsers(splitUsers)).finally(dispatch(scrolling(false)))
   }
-  
+
   useEffect(() => {
     if (scrol && users.length < totalCount) {
       fetchHandler()
@@ -29,6 +30,9 @@ const UsersList = () => {
 
   return (
     <>
+    { isLoading?
+      <h2>Загрузка</h2>
+      :
       <ul className="user-list" >
         <NewUser person={newUser} />
         { filteredUsers.length > 0?
@@ -46,6 +50,7 @@ const UsersList = () => {
         }
         
       </ul>
+    }
     </>
   )
 }

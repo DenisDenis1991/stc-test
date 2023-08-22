@@ -6,7 +6,6 @@
   &__item {
     display: grid;
     grid-template-columns: (min-content 160px 160px 120px 180px 140px);
-    // grid-template-columns: repeat(6, 1fr);
     column-gap: 20px;
     justify-content: space-between;
     align-items: center;
@@ -45,10 +44,6 @@
       grid-template-columns: repeat(3, 1fr);
     }
   }
-  
-  // &__name {
-  //   width: 180px;
-  // }
 
 }
 

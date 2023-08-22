@@ -1,5 +1,4 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit'
-// import { rootReducer } from './root-reducer'
 import { dataLoading } from './data/data.slice'
 
 export const rootReducer = combineReducers ({

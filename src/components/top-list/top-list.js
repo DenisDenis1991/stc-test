@@ -12,7 +12,6 @@ const TopList = () => {
   return(
     <div className='top-nav'>
       <div className='container'>
-
         <ul className="top-nav __list top-list">
           <li className="top-list__item">
             <div className='top-nav__img' onClick={() => handleOpenMenu()}>
