@@ -148,7 +148,7 @@ const Modal = () => {
           />
           <div className='form__button-box'>
             <button className="form__button" type="submit">Сохранить</button>
-            <button className='form__button' type='reset'>Отмена</button>
+            <button className='form__button' type='button' onClick={() => handleCloseModal()}>Отмена</button>
           </div>
         </form>
 

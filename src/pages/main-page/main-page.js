@@ -13,7 +13,8 @@ const MainPage = () => {
   const dispatch = useDispatch()
   const openModal = useSelector((state) => state.reducer.openModal)
   const error = useSelector((state) => state.reducer.error)
-  
+  const isLoading = useSelector((state) => state.reducer.isLoading)
+
   useEffect(() => {
     document.addEventListener('scroll', debounce(scrollHandler,500))
     dispatch(fetchUsers(0)).finally(dispatch(scrolling(false)))
@@ -25,9 +26,7 @@ const MainPage = () => {
 
   const scrollHandler = (e) => {
     if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 20) {
-      console.log('scroll')
       dispatch(scrolling(true))
-      
     }
   }
 
@@ -36,15 +35,18 @@ const MainPage = () => {
       <ModalMenu />
         {error? 
           <h2 className="error">Перезагрузите страницу</h2>
-          :
-          <div className="container">
-            <UsersList />
-          </div>       
-        }  
-        {openModal?
-          <Modal />
-          : null
-        }
+          : isLoading?
+            <div className="App-logo">Загрузка</div>
+            :
+
+            <div className="container">
+              <UsersList />
+            </div>       
+          }  
+          {openModal?
+            <Modal />
+            : null
+          }
 
     </main>
   )
