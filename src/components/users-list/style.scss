@@ -12,6 +12,11 @@
     padding: 10px 34px 10px 10px;
     background-color: white;
 
+    & a {
+      text-decoration: none;
+      color: #273B69;
+    }
+
     & button {
       box-shadow: 0 2px 2px gray;
       color: #273B69;

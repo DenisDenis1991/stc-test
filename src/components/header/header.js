@@ -56,7 +56,7 @@ const Header = () => {
     <header className="header">
       <div className="container">
         <div className='header__box'>
-          <input onChange={handleInputText} type="text" className='header__input' placeholder='Поиск' />
+          <input onChange={(e) => handleInputText(e)} type="text" className='header__input' placeholder='Поиск' />
         </div>
         <div>
           <button type='button' onClick={() => handlCorrect()}>Добавить пользователя</button>

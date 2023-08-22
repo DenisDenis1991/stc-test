@@ -13,7 +13,6 @@ const MainPage = () => {
   const dispatch = useDispatch()
   const openModal = useSelector((state) => state.reducer.openModal)
   const error = useSelector((state) => state.reducer.error)
-  const isLoading = useSelector((state) => state.reducer.isLoading)
 
   useEffect(() => {
     document.addEventListener('scroll', debounce(scrollHandler,500))
@@ -32,20 +31,19 @@ const MainPage = () => {
 
   return (
     <main>
-      <ModalMenu />
         {error? 
           <h2 className="error">Перезагрузите страницу</h2>
-          : isLoading?
-            <div className="App-logo">Загрузка</div>
-            :
-
+          :
+          <>
+            <ModalMenu />
             <div className="container">
               <UsersList />
             </div>       
-          }  
+          </>
+        }
           {openModal?
             <Modal />
-            : null
+          : null
           }
 
     </main>
