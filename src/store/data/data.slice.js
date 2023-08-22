@@ -4,15 +4,18 @@ import { fetchUsers } from '../api-action';
 const initialState = {
   users: [],
   isLoading: true,
+  error: false,
   scroll: true, 
   countUsers: 0,
   newUser: [],
   currentId: null,
-  heading: false,
+  modalFlag: false,
   openModal: false,
   editUser: null,
   image:'',
   filteredUsers: [],
+  openMenu: true,
+  sortingValue: ''
 }
 
 export const dataLoading = createSlice ({
@@ -31,8 +34,21 @@ export const dataLoading = createSlice ({
       state.image = action.payload;
     },
 
-    setHeading: (state, action) => {
-      state.heading = action.payload;
+    setSorting: (state, action) => {
+      state.sortingValue = action.payload;
+      switch (state.sortingValue) {
+        case 'up':
+          state.users = state.users.sort((a, b) => (a.firstName > b.firstName) - (a.firstName < b.firstName))
+          break;
+        case 'down':
+          state.users = state.users.sort((a, b) => (b.firstName > a.firstName) - (b.firstName < a.firstName))
+          break;
+        default:
+      }
+    },
+
+    setModalFlag: (state, action) => {
+      state.modalFlag = action.payload;
     },
 
     setOpenModal: (state, action) => {
@@ -45,6 +61,10 @@ export const dataLoading = createSlice ({
 
     filteredUsers: (state, action) => {
       state.filteredUsers = action.payload
+    },
+
+    setOpenMenu: (state, action) => {
+      state.openMenu = action.payload;
     },
 
     editUser: (state, action) =>  {
@@ -73,12 +93,16 @@ export const dataLoading = createSlice ({
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = false;
         state.users = [...state.users,...action.payload.users];
         if (state.countUsers === 0) {
           state.countUsers = action.payload.total;
         }
       })
+      .addCase(fetchUsers.rejected, (state,action) => {
+        state.error = true
+      })
   }
 })
 
-export const { scrolling, addNewUser, setCurrentId, setHeading, setOpenModal, editUser, setImage, filteredUsers } = dataLoading.actions;
+export const { scrolling, addNewUser, setSorting, setCurrentId, setModalFlag, setOpenModal, editUser, setImage, filteredUsers, setOpenMenu } = dataLoading.actions;

@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {useDispatch, useSelector} from 'react-redux'
 import './style.scss';
 import { addNewUser, setOpenModal, setCurrentId, editUser, setImage } from '../../store/data/data.slice';
-
+import input from '../../content/input.svg'
 
 const Modal = () => {
   const [debouncedInputValue, setDebouncedInputValue] = useState("");
@@ -13,60 +13,43 @@ const Modal = () => {
   const currentUser = useSelector((state) => state.reducer.users[currentId-1])
   const newUser = useSelector((state) => state.reducer.newUser[currentId-countUsers-1])
   const openModal = useSelector((state) => state.reducer.openModal)
-  console.log(newUser)
+  const modalFlag = useSelector((state) => state.reducer.modalFlag)
+  const dispatch = useDispatch()
+  
   
   useEffect(() => {
-    if (currentUser) {
-      
-    }
-  })
-
-  useEffect(() => {
-    console.log('inputValue', inputValue)
-    if (currentId) {
+    if (modalFlag && currentId < countUsers) {
       return(
         setInputValue({
-          name: `${currentUser?.firstName} ${currentUser?.lastName}` || newUser.name,
-          phone: currentUser?.phone|| newUser.phone,
-          email: currentUser?.email|| newUser.email,
-          address: currentUser.address.address || newUser.address || currentUser.address,
-          // photo: currentUser.image
+          name: (currentUser.firstName)? `${currentUser?.firstName} ${currentUser?.lastName}` : currentUser.name,
+          phone: currentUser?.phone || '',
+          email: currentUser?.email || '',
+          address: currentUser.address.address || currentUser.address,      
         })
       )
     } 
     else {
       return (
         setInputValue({
-          name: '',
-          phone: '',
-          email: '',
-          address: '',
-          // photo: currentUser.image
+          name: (newUser)? newUser.name : '',
+          phone: (newUser)? newUser.phone : '',
+          email: (newUser)? newUser.email : '',
+          address: (newUser)? newUser.address : '',
         })
       ) 
-      // ()=> {
-      //   dispatch(setCurrentId(null))
-      // }
     }
-  },[currentId])
+  },[modalFlag, currentId])
 
-  
-  const dispatch = useDispatch()
-  const heading = useSelector((state) => state.reducer.heading)
-  
   
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(setOpenModal(false))
     dispatch(setCurrentId(null))
-    // handleOnLoad()
-    // dispatch(setImage(    fileReader.onloadend = () => {
-    //   setImageUrl(fileReader.result)
-    // }))
-    if (!heading) {
-      dispatch(addNewUser(inputValue))
+
+    if (!modalFlag) {
+      dispatch(addNewUser(inputValue, inputValue.src = imageUrl))
     } else {
-      dispatch(editUser(debouncedInputValue, debouncedInputValue.id = currentId))
+      dispatch(editUser(debouncedInputValue, debouncedInputValue.id = currentId, debouncedInputValue.src = imageUrl))
     }
   }
 
@@ -88,13 +71,9 @@ const Modal = () => {
   }, [inputValue]);
   
 
-    const fileLoader = useRef();
-    const handleLoad =() => {
-      console.log(fileLoader.current.files[0])
-    }
 
     const [image, setImage] =useState()
-    const [imageUrl, setImageUrl] = useState()
+    const [imageUrl, setImageUrl] = useState(input)
 
     const fileReader = new FileReader()
     fileReader.onloadend = () => {
@@ -102,19 +81,21 @@ const Modal = () => {
     }
 
     const handleOnLoad = (evt) => {
-      console.log(evt.target)
+      const file = evt.target.files[0]
+      setImage(file)
+      fileReader.readAsDataURL(file)
     } 
 
   return (
     <div className={openModal? 'modal': 'modal notActive'} onClick={() => handleCloseModal()}>
       <div className='modal__content' onClick={(e) => e.stopPropagation()}>
-        <h2>{heading? 'Редактировать пользователя': 'Добавить пользователя'}</h2>
-        <form onSubmit={handleSubmit}>
-
-          <label htmlFor="avatar">Choose a profile picture:</label>
-
+        <h2>{modalFlag? 'Редактировать пользователя': 'Добавить пользователя'}</h2>
+        <form className='modal__form form' onSubmit={handleSubmit}>
+          <label className='form__input-photo'  htmlFor="avatar">
+              <img src={imageUrl} alt='аватар'></img>  
+          </label>
           <input 
-            // ref={fileLoader} 
+            className='visually-hidden'
             onChange={handleOnLoad}
             type="file" 
             id="avatar" 
@@ -123,8 +104,8 @@ const Modal = () => {
           />
           <label className="visually-hidden" htmlFor="name">Имя</label>
           <input
-            className=''
             required
+            className='form__input'
             name='name'
             id='name'
             placeholder='Имя'
@@ -132,11 +113,11 @@ const Modal = () => {
             type='text'
             onChange={(handleInputChange)}
           />
-          <label className="visually-hidden" htmlFor="number">Номер</label>
+          <label className="visually-hidden" htmlFor="phone">Номер</label>
           <input
-            className=''
             required
-            id='number'
+            className='form__input'
+            id='phone'
             name='phone'
             placeholder='Номер'
             type='text'
@@ -146,7 +127,7 @@ const Modal = () => {
           <label className="visually-hidden" htmlFor="email">Электронная почта</label>
           <input
             required
-            className=''
+            className='form__input'
             name='email'
             id='email'
             placeholder='Электронная почта'
@@ -157,17 +138,18 @@ const Modal = () => {
           <label className="visually-hidden" htmlFor="address">Адрес</label>
           <input
             required
-            className=''
-            ref={fileLoader}
+            className='form__input'
             name='address'
             id='address'
             placeholder='Адрес'
-            value= {(inputValue.address)? '22' : '11'}
+            value= {inputValue.address || ''}
             type='text'
             onChange={handleInputChange}
           />
-          <button className="form__button" type="submit">Сохранить</button>
-          <button className='form__button' type='reset'>Отмена</button>
+          <div className='form__button-box'>
+            <button className="form__button" type="submit">Сохранить</button>
+            <button className='form__button' type='reset'>Отмена</button>
+          </div>
         </form>
 
       </div>

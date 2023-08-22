@@ -20,7 +20,7 @@ const UsersList = () => {
     setSplitUsers((prevState) => prevState + USER_PER_PAGE)
     dispatch(fetchUsers(splitUsers)).finally(dispatch(scrolling(false)))
   }
-  console.log(filteredUsers)
+  
   useEffect(() => {
     if (scrol && users.length < totalCount) {
       fetchHandler()
@@ -51,8 +51,3 @@ const UsersList = () => {
 }
 
 export default UsersList
-
-
-// const months = [{'a':'b'}, {'b':'c'}, {'c':'d'}];
-// months.splice(1, 0, {'H':'F'});
-// month
