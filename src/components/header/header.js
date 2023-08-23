@@ -58,7 +58,7 @@ const Header = () => {
         <div className='header__box'>
           <input onChange={(e) => handleInputText(e)} type="text" className='header__input' placeholder='Поиск' />
         </div>
-        <div>
+        <div className= 'header__button-wrapper'>
           <button type='button' onClick={() => handlCorrect()}>Добавить пользователя</button>
           <select onChange={(e)=>{handleSelect(e.target.value)}}>Сортировка
           <option value="">-- Сортировка --</option>
