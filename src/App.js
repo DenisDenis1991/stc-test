@@ -9,7 +9,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path={AppRoute.Main} element={<Layout />}>
-          <Route index element = {<MainPage />} />
+          <Route path={'stc-test'} element = {<MainPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
